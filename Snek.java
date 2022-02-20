@@ -3,25 +3,13 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
-import snekGame.test.TestPane;
 
 import javax.swing.*;
 
@@ -34,9 +22,9 @@ public class Snek extends JPanel {
 		new Snek();
 	}
 	
-	final int boardResolution = 20;
-	final int boardWidth = 40;
-	final int boardHeight = 30;
+	final int boardResolution = 40;
+	final int boardWidth = 20;
+	final int boardHeight = 15;
 	final int boardPosX = 350;
 	final int boardPosY = 100;
 	
@@ -46,6 +34,11 @@ public class Snek extends JPanel {
 	int catLocationY = boardPosY + (int)(boardHeight/2)*boardResolution;
 	int catLastX = 0;
 	int catLastY = 0;
+	int catLength = 1;
+	
+	int red;
+	int green;
+	int blue;
 	
 	static int foodPosX = 0;
 	static int foodPosY = 0;
@@ -72,7 +65,7 @@ public class Snek extends JPanel {
 		pa.setVisible(true);
 		pa.setLayout(null);
 		
-		int catLength = 1;
+		
 		
 		JLabel cat = new JLabel(Integer.toString(catLength));
 		cat.setOpaque(true);
@@ -111,12 +104,16 @@ public class Snek extends JPanel {
 		JLabel food = new JLabel();
 		pa.add(food);
 		
+		
 		while(catLength < 20 && catLocationX < boardPosX + boardWidth*boardResolution - boardResolution + 1 && catLocationY < boardPosY + boardHeight*boardResolution - boardResolution + 1 && catLocationX > boardPosX - 1 && catLocationY > boardPosY - 1) {
 			
 			if(foodCount == 0) {
 				foodPosX = (int) (Math.random()*(boardWidth))*boardResolution + boardPosX;
 				foodPosY = (int)(Math.random()*(boardHeight))*boardResolution + boardPosY;
-				regenerateFood(pa,food,foodPosX,foodPosY);
+				red = (int) (Math.random()*200+55);
+				green = (int) (Math.random()*200+55);
+				blue = (int) (Math.random()*200+55);
+				regenerateFood(pa,food,foodPosX,foodPosY,red,green,blue);
 				foodCount = 1;
 			}
 			
@@ -227,12 +224,12 @@ public class Snek extends JPanel {
 
     }
 	
-	public void regenerateFood(JPanel p, JLabel l, int x, int y) {
+	public void regenerateFood(JPanel p, JLabel l, int x, int y, int r, int g, int b) {
         l.setSize(boardResolution,boardResolution);
         l.setOpaque(true);
-        l.setBackground(new Color((int) (Math.random()*200)+55,(int) (Math.random()*200)+55,(int) (Math.random()*200)+55));
+        l.setBackground(new Color(r,g,b));
         l.setLocation(x,y);
-        p.setComponentZOrder(l,0);
+        p.setComponentZOrder(l,catLength+2);
         l.setVisible(true);
 	}
 	
@@ -244,13 +241,13 @@ public class Snek extends JPanel {
 		}
 	}
 	
-	public void addSegment(JPanel p,int num) throws InterruptedException {
+	public void addSegment(JPanel p,int len) throws InterruptedException {
 		JLabel clone = new JLabel();
 		clone.setSize(boardResolution,boardResolution);
 		clone.setOpaque(true);
-		clone.setBackground(new Color(255, 50+num*10, 50+num*10));
+		clone.setBackground(new Color(red,green,blue));
 		p.add(clone);
-		p.setComponentZOrder(clone,num);
+		p.setComponentZOrder(clone,len);
 		
 		clone.setLocation(catLocationX,catLocationY);
 		
@@ -259,9 +256,9 @@ public class Snek extends JPanel {
 		Thread newClone = new Thread() {
 			public void run() {
 				try {
-					Thread.sleep((num+1)*boardWidth/10);
+					Thread.sleep(boardResolution*(len+1)*(boardWidth/10));
 					while(true) {
-						clone.setLocation(catAllX.get(catAllX.size()-boardResolution*num-1),catAllY.get(catAllY.size()-boardResolution*num-1));
+						clone.setLocation(catAllX.get(catAllX.size()-boardResolution*len-1),catAllY.get(catAllY.size()-boardResolution*len-1));
 					}
 					
 				} catch (InterruptedException e) {
