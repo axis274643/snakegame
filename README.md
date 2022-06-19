@@ -7,3 +7,5 @@ How do I add a picture of the game?? I don't know how to add a picture into this
 I also don't know any of the syntax and after committing it I realized I didn't put any periods after single returns so it clumped all of them together :(((
 
 Now I have to type double returns to do the "\n" things and get it on a new line :((((((
+
+![alt text](https://github.com/suchicatea/snakegame/blob/main/snakegame1.PNG)
