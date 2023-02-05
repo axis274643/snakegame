@@ -4,8 +4,4 @@ This was created using Eclipse for fun because fun is good. I took the AP comput
 
 Use keys WASD
 
-Conventional gameboard:
-![alt text](https://github.com/axis274643/Custom-2048/blob/main/custom2048_2.PNG)
-
-Customized:
-![alt text](https://github.com/axis274643/Custom-2048/blob/main/custom2048_1.PNG)
+![alt text](https://github.com/suchicatea/snakegame/blob/main/snakegame1.PNG)
